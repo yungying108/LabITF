@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+    <center>
+
+        <div id="someimg" class="profile">
+            <div class="notify"><p>1</p></div>
+        </div>
+        <h1 id="user">Username, ok</h1>
+        <label>Set username</label><input class="mb-4" type="text" id="name"><button onclick="setName()">set</button>
+        <br><label>Set Url</label><input type="text" id="profile"><button onclick="setImg()">set</button>
+        <br>
+        <br><p>add paragraph</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <input class="mb-4" type="text" id="phonename" placeholder="Name">
+            <input class="mb-4" type="text" id="phone" placeholder="Tel">
+            <button onclick="addPhone()" style="height: fit-content;">add</button>
+            <label>
+                <button onclick="saveCSV()">Export</button>
+            </label> 
+        </div>
+        
+        <table id="phonetable" border="1" style="width: 500px;">
+            <tr>
+              <th>No.</th>
+              <th>Name</th>
+              <th>phonenumber</th>
+            </tr>
+            <!-- <tr>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+            </tr>
+            <tr>
+              <td>Centro comercial Moctezuma</td>
+              <td>Francisco Chang</td>
+              <td>Mexico</td>
+            </tr> -->
+          </table> 
+    </center>
+    
+    <script>
+        const username = document.getElementById("user");
+        const input = document.getElementById("name");
+        const profile = document.getElementById("profile");
+        const newdiv = document.getElementsByClassName("container")[0];
+    
+    function setName(){
+        username.textContent = input.value;
+    }
+    function setImg(){
+        url = ""
+        url = profile.value
+        someimg.style.backgroundImage = "url("+url+")"
+        console.log(url);
+        profile.value = "";
+    }
+    function addParagraph(){
+        const newpara = document.createElement("p")
+        newpara.textContent = "new paragraph";
+        newdiv.appendChild(newpara)
+    }
+    const phones = []
+    function addPhone() {
+        const phonename = document.getElementById("phonename").value;
+        const phone = document.getElementById("phone").value;
+        console.log(phonename, phone)
+        phones.push([phonename, phone])
+        
+        console.log(phones)
+        const phonetable = document.getElementById("phonetable");
+
+        phonetable.innerHTML += `<tr>
+              <td>${phonetable.children.length}</td>
+              <td>${phonename}</td>
+              <td>${phone}</td>
+            </tr>`
+    }
+
+    function saveCSV() {
+    const csvContent = phones.map(row => row.join(",")).join("\n"); // Convert array to CSV string
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "data.csv");
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+};
+    </script>
+</head>
+<body>
